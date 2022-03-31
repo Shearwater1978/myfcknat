@@ -9,10 +9,10 @@ module "aws_vpc" {
     name                                = "fckNatVPC"
     environment                         = "dev"
     vpc_cidr                            = "10.0.0.0/16"
-    public_cidr_block                   = ["10.0.1.0/24"]
-    private_cidr_block                  = ["10.0.10.0/24"]
+    public_cidr_block                   = ["10.0.1.0/24","10.0.11.0/24"]
+    private_cidr_block                  = ["10.0.10.0/24","10.0.20.0/24"]
     allowed_ports                       = ["22",]
-    availability_zone		        	      = ["use2-az1"]
+    availability_zone		        	      = ["use2-az1","use2-az2"]
     enable_internet_gateway	        	  = "true"
 }
 
@@ -22,6 +22,7 @@ module "fckNAT" {
     name                                = "fckNAT"
     environment                         = "dev"
     vpc_security_group_ids              = ["${module.aws_vpc.public_security_group_id}"]
+    ec2_instance_type                   = "t2.micro"
     subnet_id                           = "${module.aws_vpc.publicsubnet_id_0}"
     key_path                            = "/root/.ssh/id_rsa.pub"
     home_dir                            = "${var.home_dir}"
